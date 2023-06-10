@@ -1,5 +1,6 @@
 import pygame
 from settings import *
+from support import *
 from tile import Tile
 from player import Player
 from debug import debug
@@ -16,15 +17,34 @@ class Level:
         self.create_map()
 
     def create_map(self):
-        for row_index, row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
+        layouts = {
+            'boundary': import_csv_layout('../map/test_map_collisions.csv'),
+            'object': import_csv_layout('../map/test_map_elements.csv'),
+            'big_object': import_csv_layout('../map/test_map_big_elements.csv')
+        }
 
-                if col == 'x':
-                    Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
-                elif col == 'p':
-                    self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
+        graphics = {
+            'objects': import_folder('../graphics/test/objects'),
+            'big_objects': import_folder('../graphics/test/big_objects')
+        }
+
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+
+                        if style == 'boundary':
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
+                        elif style == 'object':
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object',
+                                 graphics['objects'][int(col)])
+                        elif style == 'big_object':
+                            Tile((x, y), [self.visible_sprites], 'big_object',
+                                 graphics['big_objects'][int(col)])
+
+        self.player = Player((1500, 900), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
         self.visible_sprites.update()
@@ -41,7 +61,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
 
         # Floor management
-        self.floor_surface = pygame.image.load('../graphics/test/ground.png').convert()
+        self.floor_surface = pygame.image.load('../map/test_map.png').convert()
         self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
 
     def custom_draw(self, player):
