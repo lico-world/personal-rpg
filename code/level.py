@@ -42,11 +42,15 @@ class YSortCameraGroup(pygame.sprite.Group):
 
     def custom_draw(self, player):
 
-        # Later: The camera should only move when the player is about to exit a camera sub-rectangle (static when the
-        # player is centered)
+        # Horizontal camera movement
+        if (player.rect.right - self.camera_pos.x >= WIDTH - SCROLL_WIDTH and player.direction[0] > 0) or \
+                (player.rect.left - self.camera_pos.x <= SCROLL_WIDTH and player.direction[0] < 0):
+            self.camera_pos.x += player.direction[0] * player.speed
 
-        self.camera_pos.x = player.rect.centerx - self.half_width
-        self.camera_pos.y = player.rect.centery - self.half_height
+        # Vertical camera movement
+        if (player.rect.top - self.camera_pos.y >= HEIGHT - SCROLL_HEIGHT and player.direction[1] > 0) or \
+                (player.rect.bottom - self.camera_pos.y <= SCROLL_HEIGHT and player.direction[1] < 0):
+            self.camera_pos.y += player.direction[1] * player.speed
 
         # Sort sprites to draw according to the y value
         for sprite in sorted(self.sprites(), key=lambda s: s.rect.centery):
