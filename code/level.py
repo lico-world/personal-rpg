@@ -42,6 +42,9 @@ class YSortCameraGroup(pygame.sprite.Group):
 
     def custom_draw(self, player):
 
+        if self.camera_pos == pygame.math.Vector2():
+            self.camera_pos += player.rect.center - pygame.math.Vector2(self.half_width, self.half_height)
+
         # Horizontal camera movement
         if (player.rect.right - self.camera_pos.x >= WIDTH - SCROLL_WIDTH and player.direction[0] > 0) or \
                 (player.rect.left - self.camera_pos.x <= SCROLL_WIDTH and player.direction[0] < 0):
