@@ -40,6 +40,10 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
 
+        # Floor management
+        self.floor_surface = pygame.image.load('../graphics/test/ground.png').convert()
+        self.floor_rect = self.floor_surface.get_rect(topleft=(0, 0))
+
     def custom_draw(self, player):
 
         if self.camera_pos == pygame.math.Vector2():
@@ -48,12 +52,19 @@ class YSortCameraGroup(pygame.sprite.Group):
         # Horizontal camera movement
         if (player.rect.right - self.camera_pos.x >= WIDTH - SCROLL_WIDTH and player.direction[0] > 0) or \
                 (player.rect.left - self.camera_pos.x <= SCROLL_WIDTH and player.direction[0] < 0):
+
+            # If the player reach the end of the static zone : camera move
             self.camera_pos.x += player.direction[0] * player.speed
 
         # Vertical camera movement
         if (player.rect.top - self.camera_pos.y >= HEIGHT - SCROLL_HEIGHT and player.direction[1] > 0) or \
                 (player.rect.bottom - self.camera_pos.y <= SCROLL_HEIGHT and player.direction[1] < 0):
+
+            # If the player reach the end of the static zone : camera move
             self.camera_pos.y += player.direction[1] * player.speed
+
+        # Drawing the floor
+        self.display_surface.blit(self.floor_surface, self.floor_rect.topleft - self.camera_pos)
 
         # Sort sprites to draw according to the y value
         for sprite in sorted(self.sprites(), key=lambda s: s.rect.centery):
