@@ -41,7 +41,7 @@ class Level:
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'object',
                                  graphics['objects'][int(col)])
                         elif style == 'big_object':
-                            Tile((x, y), [self.visible_sprites], 'big_object',
+                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'big_object',
                                  graphics['big_objects'][int(col)])
 
         self.player = Player((1500, 900), [self.visible_sprites], self.obstacle_sprites)

@@ -10,6 +10,7 @@ class Tile(pygame.sprite.Sprite):
 
         if sprite_type == 'big_object':
             self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - TILESIZE))
+            self.hitbox = self.rect.inflate(0, -(TILESIZE + COLLISION_MARGIN))
         else:
             self.rect = self.image.get_rect(topleft=pos)
-            self.hitbox = self.rect.inflate(0, -10)
+            self.hitbox = self.rect.inflate(0, -COLLISION_MARGIN)
