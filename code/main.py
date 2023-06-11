@@ -2,10 +2,12 @@ import pygame
 import sys
 from settings import *
 from level import Level
+from keys_config import *
 
 
 class Game:
     def __init__(self):
+        init_keymaps()
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()

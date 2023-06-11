@@ -1,7 +1,6 @@
-import pygame
-
 from support import import_folder
 from settings import *
+from keys_config import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -37,36 +36,36 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
     def input(self):
-        keys = pygame.key.get_pressed()
+        # keys = pygame.key.get_pressed()
 
         # Movement keys
-        if keys[pygame.K_UP]:
+        if detect_key('up'):
             self.direction.y = -1
             self.status = 'up'
-        elif keys[pygame.K_DOWN]:
+        elif detect_key('down'):
             self.direction.y = 1
             self.status = 'down'
         else:
             self.direction.y = 0  # To avoid keep moving when no key is pressed
 
-        if keys[pygame.K_RIGHT]:
+        if detect_key('right'):
             self.direction.x = 1
             self.status = 'right'
-        elif keys[pygame.K_LEFT]:
+        elif detect_key('left'):
             self.direction.x = -1
             self.status = 'left'
         else:
             self.direction.x = 0  # To avoid keep moving when no key is pressed
 
         # Actions keys
-        if keys[pygame.K_SPACE] and not self.doing_action:
+        if detect_key('action') and not self.doing_action:  # Only do an action if it is not already the case
             self.doing_action = True
-            self.action_time = pygame.time.get_ticks()
+            self.action_time = pygame.time.get_ticks()  # First time point to manage action cooldown
             print('Attack')
 
     def get_status(self):
         # Idle status
-        if self.direction.x == self.direction.y == 0:
+        if self.direction.x == self.direction.y == 0:  # Detect if the player is idle
             if 'idle' not in self.status:
                 self.status += '_idle'
 

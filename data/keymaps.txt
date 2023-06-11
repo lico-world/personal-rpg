@@ -1,0 +1,5 @@
+up:122
+down:115
+right:100
+left:113
+action:32
