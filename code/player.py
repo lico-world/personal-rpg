@@ -37,29 +37,29 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
     def input(self):
-        # keys = pygame.key.get_pressed()
+        key_config = KeyConfig.get_instance()
 
         # Movement keys
-        if detect_key('up'):
+        if key_config.detect_key('up'):
             self.direction.y = -1
             self.status = 'up'
-        elif detect_key('down'):
+        elif key_config.detect_key('down'):
             self.direction.y = 1
             self.status = 'down'
         else:
             self.direction.y = 0  # To avoid keep moving when no key is pressed
 
-        if detect_key('right'):
+        if key_config.detect_key('right'):
             self.direction.x = 1
             self.status = 'right'
-        elif detect_key('left'):
+        elif key_config.detect_key('left'):
             self.direction.x = -1
             self.status = 'left'
         else:
             self.direction.x = 0  # To avoid keep moving when no key is pressed
 
         # Actions keys
-        if detect_key('attack') and not self.attacking:  # Only do an action if it is not already the case
+        if key_config.detect_key('attack') and not self.attacking:  # Only do an action if it is not already the case
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()  # First time point to manage action cooldown
             print('Attack')

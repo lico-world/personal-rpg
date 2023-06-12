@@ -1,4 +1,3 @@
-import sys
 from settings import *
 from level import Level
 from keys_config import *
@@ -6,7 +5,8 @@ from keys_config import *
 
 class Game:
     def __init__(self):
-        init_keymaps()
+        key_config = KeyConfig.get_instance()
+        key_config.init_keymaps()
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
