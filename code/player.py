@@ -1,3 +1,4 @@
+import debug
 from support import import_folder
 from settings import *
 from keys_config import *
@@ -115,9 +116,10 @@ class Player(pygame.sprite.Sprite):
         animation = self.animations[self.status]
 
         # Loop
-        self.frame_index = int(self.frame_index + ANIMATION_SPEED) % len(animation)
+        self.frame_index = (self.frame_index + ANIMATION_SPEED) % len(animation)
+        print(int(self.frame_index + ANIMATION_SPEED))
 
-        self.image = animation[self.frame_index]
+        self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
     def cooldowns(self):
