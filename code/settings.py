@@ -6,3 +6,4 @@ FPS = 65
 TILESIZE = 64
 COLLISION_MARGIN = 10
 PLAYER_COLLISION_MARGIN = (6, 34)   # First one to reduce the width to easily fit in a one tile hole
+ANIMATION_SPEED = 0.15

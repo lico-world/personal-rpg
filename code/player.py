@@ -13,17 +13,18 @@ class Player(pygame.sprite.Sprite):
 
         self.import_player_assets()
         self.status = 'down'
+        self.frame_index = 0
 
         self.direction = pygame.math.Vector2()
         self.speed = 5
-        self.doing_action = False
-        self.action_cooldown = 400
-        self.action_time = None
+        self.attacking = False
+        self.attack_cooldown = 400
+        self.attack_time = None
 
         self.obstacle_sprites = obstacle_sprites
 
     def import_player_assets(self):
-        player_path = '../graphics/player/'
+        player_path = '../graphics/test/player/'
 
         self.animations = {
             'up': [], 'down': [], 'left': [], 'right': [],
@@ -58,16 +59,29 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0  # To avoid keep moving when no key is pressed
 
         # Actions keys
-        if detect_key('action') and not self.doing_action:  # Only do an action if it is not already the case
-            self.doing_action = True
-            self.action_time = pygame.time.get_ticks()  # First time point to manage action cooldown
+        if detect_key('attack') and not self.attacking:  # Only do an action if it is not already the case
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()  # First time point to manage action cooldown
             print('Attack')
 
     def get_status(self):
         # Idle status
         if self.direction.x == self.direction.y == 0:  # Detect if the player is idle
-            if 'idle' not in self.status:
+            if 'idle' not in self.status and 'attack' not in self.status:
                 self.status += '_idle'
+
+        if self.attacking:
+            self.direction.x = 0
+            self.direction.y = 0
+
+            if 'attack' not in self.status:
+                if 'idle' in self.status:
+                    self.status = self.status.replace('idle', 'attack')
+                else:
+                    self.status += '_attack'
+        else:
+            if 'attack' in self.status:
+                self.status = self.status.replace('_attack', '')
 
     def move(self, speed):
         if self.direction.magnitude() != 0:  # Can't normalize a null vector
@@ -96,15 +110,25 @@ class Player(pygame.sprite.Sprite):
                     elif self.direction.y < 0:  # Moving up
                         self.hitbox.top = sprite.hitbox.bottom
 
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # Loop
+        self.frame_index = int(self.frame_index + ANIMATION_SPEED) % len(animation)
+
+        self.image = animation[self.frame_index]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
+
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
 
-        if self.doing_action:
-            if current_time - self.action_time >= self.action_cooldown:
-                self.doing_action = False
+        if self.attacking:
+            if current_time - self.attack_time >= self.attack_cooldown:
+                self.attacking = False
 
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
+        self.animate()
         self.move(self.speed)

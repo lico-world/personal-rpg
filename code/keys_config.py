@@ -5,7 +5,7 @@ keymap = {
     'down': 0,
     'right': 0,
     'left': 0,
-    'action': 0
+    'attack': 0
 }
 
 
