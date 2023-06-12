@@ -2,13 +2,18 @@ import sys
 import pygame
 
 
-class KeyConfig:
-    __instance = None
+class Singleton(type):
+    _instances = {}
 
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class KeyConfig(metaclass=Singleton):
     def __init__(self):
-        if KeyConfig.__instance is None:
-            raise Exception("Error : use get_instance() instead")
-
         self.keymap = {
             'up': 0,
             'down': 0,
@@ -18,12 +23,6 @@ class KeyConfig:
         }
 
         self.current_keys = []
-
-    @staticmethod
-    def get_instance():
-        if KeyConfig.__instance is None:
-            KeyConfig.__instance = KeyConfig()
-        return KeyConfig.__instance
 
     def init_keymaps(self):
         with open('../data/keymaps.txt', 'r') as save:

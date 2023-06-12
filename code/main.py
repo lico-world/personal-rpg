@@ -5,7 +5,7 @@ from keys_config import *
 
 class Game:
     def __init__(self):
-        key_config = KeyConfig.get_instance()
+        key_config = KeyConfig()
         key_config.init_keymaps()
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))

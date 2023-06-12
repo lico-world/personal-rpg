@@ -37,7 +37,8 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
     def input(self):
-        key_config = KeyConfig.get_instance()
+        key_config = KeyConfig()
+        key_config.update_pressed_keys(pygame.key.get_pressed())
 
         # Movement keys
         if key_config.detect_key('up'):
