@@ -40,7 +40,11 @@ class DevTool(metaclass=Singleton):
         for key, info in self.infos.items():
             debug_surf = font.render(str(key) + ' : ' + str(info), True, 'White')
             debug_rect = debug_surf.get_rect(topleft=(10, 20 * index + 10))
-            pygame.draw.rect(display_surface, 'Black', debug_rect)
+            background_surf = font.render(str(key) + ' : ' + str(info), True, 'Black')
+            background_surf.fill((0, 0, 0))
+            debug_surf.set_alpha(175)
+            background_surf.set_alpha(175)
+            display_surface.blit(background_surf, debug_rect)
             display_surface.blit(debug_surf, debug_rect)
             index += 1
 
