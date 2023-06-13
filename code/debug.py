@@ -1,7 +1,8 @@
 import pygame
 
 pygame.init()
-font = pygame.font.Font(None, 30)
+TEXT_SIZE = 25
+font = pygame.font.Font(None, TEXT_SIZE)
 
 
 def debug(info, y=10, x=10):
@@ -30,6 +31,7 @@ class DevTool(metaclass=Singleton):
         # Save all data needed to be displayed
         self.infos = {
             'FPS'            : '',
+            'coordinates'    : '',
             'animation_state': '',
             'player_speed'   : '',
             'player_dir'     : ''
@@ -47,7 +49,7 @@ class DevTool(metaclass=Singleton):
 
             # Text of the dev tool
             debug_surf = font.render(str(key) + ' : ' + str(info), True, 'White')
-            debug_rect = debug_surf.get_rect(topleft=(10, 20 * index + 10))
+            debug_rect = debug_surf.get_rect(topleft=(10, 2 * TEXT_SIZE * index / 3 + 10))
             debug_surf.set_alpha(175)
 
             # Draw the dev tool

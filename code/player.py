@@ -105,6 +105,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.hitbox.center
 
         dev_tool = DevTool()
+        dev_tool.update_info('coordinates',
+                             pygame.math.Vector2(self.rect.centerx / TILESIZE, self.rect.centery / TILESIZE))
         dev_tool.update_info('player_speed', math.sqrt(math.pow(self.direction.x * self.speed, 2) +
                                                        math.pow(self.direction.y * self.speed, 2)))
         dev_tool.update_info('player_dir', round(self.direction, 2))
