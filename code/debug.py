@@ -24,28 +24,36 @@ class Singleton(type):
 
 class DevTool(metaclass=Singleton):
     def __init__(self):
+        # Is the dev tool gonna be displayed
         self.display_info = False
 
+        # Save all data needed to be displayed
         self.infos = {
-            'FPS': '',
+            'FPS'            : '',
             'animation_state': '',
-            'player_speed': '',
-            'player_dir': ''
+            'player_speed'   : '',
+            'player_dir'     : ''
         }
 
     def display(self):
         display_surface = pygame.display.get_surface()
 
-        index = 0
+        index = 0  # Index to place the text on the screen
         for key, info in self.infos.items():
-            debug_surf = font.render(str(key) + ' : ' + str(info), True, 'White')
-            debug_rect = debug_surf.get_rect(topleft=(10, 20 * index + 10))
+            # Background of the dev tool
             background_surf = font.render(str(key) + ' : ' + str(info), True, 'Black')
             background_surf.fill((0, 0, 0))
-            debug_surf.set_alpha(175)
             background_surf.set_alpha(175)
+
+            # Text of the dev tool
+            debug_surf = font.render(str(key) + ' : ' + str(info), True, 'White')
+            debug_rect = debug_surf.get_rect(topleft=(10, 20 * index + 10))
+            debug_surf.set_alpha(175)
+
+            # Draw the dev tool
             display_surface.blit(background_surf, debug_rect)
             display_surface.blit(debug_surf, debug_rect)
+
             index += 1
 
     def switch_on_off(self):

@@ -8,7 +8,7 @@ class Tile(pygame.sprite.Sprite):
         self.sprite_type = sprite_type
         self.image = surface
 
-        if sprite_type == 'big_object':
+        if sprite_type == 'big_object':  # Big object are twice tall in visual aspect but not for collisions
             self.rect = self.image.get_rect(topleft=(pos[0], pos[1] - TILESIZE))
             self.hitbox = self.rect.inflate(0, -(TILESIZE + COLLISION_MARGIN))
             self.hitbox.topleft = self.rect.midleft
