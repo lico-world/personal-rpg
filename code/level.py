@@ -1,3 +1,5 @@
+import math
+
 from settings import *
 from support import *
 from tile import Tile
@@ -49,6 +51,14 @@ class Level:
         self.visible_sprites.custom_draw(self.player)
 
 
+def item_is_displayable(player, item):
+    player_position = player.rect.center
+    item_position = item.rect.center
+
+    return abs(player_position[0] - item_position[0]) < (WIDTH // 2) + SCROLL_WIDTH and \
+        abs(player_position[1] - item_position[1]) < (HEIGHT // 2) + SCROLL_HEIGHT
+
+
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
@@ -86,5 +96,6 @@ class YSortCameraGroup(pygame.sprite.Group):
 
         # Sort sprites to draw according to the y value
         for sprite in sorted(self.sprites(), key=lambda s: s.rect.centery):
-            offset = sprite.rect.topleft - self.camera_pos
-            self.display_surface.blit(sprite.image, offset)
+            if item_is_displayable(player, sprite):
+                offset = sprite.rect.topleft - self.camera_pos
+                self.display_surface.blit(sprite.image, offset)
