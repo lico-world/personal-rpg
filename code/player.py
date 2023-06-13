@@ -1,7 +1,8 @@
-import debug
 from support import import_folder
 from settings import *
 from keys_config import *
+from debug import DevTool
+import math
 
 
 class Player(pygame.sprite.Sprite):
@@ -85,6 +86,9 @@ class Player(pygame.sprite.Sprite):
             if 'attack' in self.status:
                 self.status = self.status.replace('_attack', '')
 
+        dev_tool = DevTool()
+        dev_tool.update_info('animation_state', self.status)
+
     def move(self, speed):
         if self.direction.magnitude() != 0:  # Can't normalize a null vector
             self.direction = self.direction.normalize()  # Avoid the speed boost with diagonal movement
@@ -94,6 +98,11 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.y += self.direction.y * speed
         self.collision('vertical')
         self.rect.center = self.hitbox.center
+
+        dev_tool = DevTool()
+        dev_tool.update_info('player_speed', math.sqrt(math.pow(self.direction.x*self.speed, 2) +
+                                                       math.pow(self.direction.y*self.speed, 2)))
+        dev_tool.update_info('player_dir', round(self.direction, 2))
 
     def collision(self, direction):
         if direction == 'horizontal':
@@ -117,7 +126,6 @@ class Player(pygame.sprite.Sprite):
 
         # Loop
         self.frame_index = (self.frame_index + ANIMATION_SPEED) % len(animation)
-        print(int(self.frame_index + ANIMATION_SPEED))
 
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
