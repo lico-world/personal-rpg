@@ -1,0 +1,1 @@
+sword:100:15:../graphics/test/weapons/sword/full.png:
