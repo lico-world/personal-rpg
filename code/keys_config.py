@@ -40,7 +40,6 @@ class KeyConfig(metaclass=Singleton):
 
     def save_keymaps(self):
         with open(self.save_file, 'w') as saving_file:
-            print('on save : ' + str(self.keymap['up']))
             for action, key in self.keymap.items():
                 saving_file.write(str(action) + ':' + str(key) + '\n')
 
